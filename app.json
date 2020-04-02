@@ -1,4 +1,6 @@
 {
+  "name": "VirtualTether",
+  "displayName": "VirtualTether",
   "expo": {
     "name": "VirtualTether",
     "displayName": "VirtualTether",
