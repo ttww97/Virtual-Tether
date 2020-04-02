@@ -1,9 +1,6 @@
 {
-  "name": "VirtualTether",
-  "displayName": "VirtualTether",
   "expo": {
     "name": "VirtualTether",
-    "displayName": "VirtualTether",
     "slug": "VirtualTether-app",
     "privacy": "public",
     "sdkVersion": "36.0.0",
