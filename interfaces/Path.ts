@@ -1,7 +1,7 @@
-export interface Path {
+export interface IPath {
     name: string;
     leftSide: INode[];
-    rightSide: INode[]
+    rightSide: INode[];
 }
 
 export interface INode {
