@@ -1,6 +1,6 @@
-import {Vec2d} from "../types/Vec2d";
+import {ICoordinate, IPath} from "./Path";
 export interface IAlgorithmUpdateData { 
-    path: Path;
-    location: Vec2d;
-    time: TimeStamp;
+    path: IPath;
+    location: ICoordinate;
+    time: number;
   }
