@@ -1,11 +1,15 @@
 import React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
+import {shallowEqual, useSelector} from "react-redux";
 
 const Communication = () => {
+
+    const algorithmMessage = useSelector(state => state.communication.constantValue, shallowEqual);
 
     return (
         <View style={styles.container}>
             <Text style={styles.text}>Communication</Text>
+            <Text>ConstantValue is: {algorithmMessage}</Text>
         </View>
     );
 }
