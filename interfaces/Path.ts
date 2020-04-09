@@ -1,4 +1,6 @@
 // The interface of a path
+import {ICoordinate} from "./ICoordinate";
+
 export interface IPath {
     name: string;
 
@@ -17,7 +19,3 @@ export interface INode {
 
 // The coordinate is cartesian for simplicity, but we will need to translate from GPS
 // To cartesian.
-export interface ICoordinate {
-    x : number;
-    y : number;
-}
