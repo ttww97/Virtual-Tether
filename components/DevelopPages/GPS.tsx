@@ -1,13 +1,33 @@
-import React from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import React, { Component } from 'react';
+import { Alert, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 
-const GPS = () => {
+export default class GPS extends Component {
+	state = {
+		location: null
+	};
 
-    return (
-        <View style={styles.container}>
-            <Text style={styles.text}>GPS</Text>
-        </View>
-    );
+	findCoordinates = () => {
+		navigator.geolocation.getCurrentPosition(
+			position => {
+				const location = JSON.stringify(position);
+
+				this.setState({ location });
+			},
+			error => Alert.alert(error.message),
+			{ enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
+		);
+	};
+
+	render() {
+		return (
+			<View style={styles.container}>
+				<TouchableOpacity onPress={this.findCoordinates}>
+					<Text style={styles.welcome}>Find My Coords?</Text>
+					<Text>Location: {this.state.location}</Text>
+				</TouchableOpacity>
+			</View>
+		);
+	}
 }
 
 const styles = StyleSheet.create({
@@ -17,10 +37,12 @@ const styles = StyleSheet.create({
       alignItems: 'center',
       justifyContent: 'center',
     },
-    text:{
-        fontSize: 40
-    }
+    welcome: {
+		fontSize: 20,
+		textAlign: 'center',
+		margin: 10
+	}
   });
   
 
-export default GPS;
+// export default GPS;
