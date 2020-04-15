@@ -1,10 +1,12 @@
 import {Vec2d} from "./Vec2D"
-export class Path {
-    leftNodes : PathNode[];
-    rightNodes : PathNode[];
+import {IPath, INode} from "../interfaces/Path"
+export class Path implements IPath {
+    name : string;
+    leftSide: PathNode[];
+    rightSide : PathNode[];
 }
 
-class PathNode {
-    location : Vec2d;
-    margin : number; 
+class PathNode implements INode {
+    errorMargin : number;
+    coordinate : Vec2d; 
 }
