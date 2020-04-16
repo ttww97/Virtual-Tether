@@ -2,6 +2,8 @@ import React from "react";
 import { StyleSheet, View, Text } from "react-native";
 import { shallowEqual, useSelector } from "react-redux";
 import { output } from "../../util/outputAudios";
+import { Audio } from "expo";
+import * as Expo from "expo";
 
 const Communication = () => {
   output();

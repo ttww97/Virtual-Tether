@@ -22,5 +22,5 @@ export interface IOutput {
   // if the valueFromAlgorithm is inside of the range
   // combined with the version
   // we will play the correspondent sound
-  output: object;
+  output: string;
 }
