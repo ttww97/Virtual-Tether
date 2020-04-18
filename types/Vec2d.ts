@@ -1,5 +1,5 @@
 //https://github.com/sebastian-bechtold/typescript-vector2d/blob/master/src/Vec2d.ts
-import { ICoordinate } from "../interfaces/Path";
+import { ICoordinate } from "../interfaces/ICoordinate";
 export class Vec2d implements ICoordinate{
     
     x : number = 0;
