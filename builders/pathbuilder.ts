@@ -6,18 +6,19 @@ import { Vec2d } from "../types/Vec2D";
 
 export function buildPath(name: string,
                      innerlat : number[], innerlong: number[],
-                     outerlong: number[], outerlat : number[],
+                     outerlat : number[], outerlong: number[],
                      errorMargin: number)
                     : Path {
    
-    let path : Path;
+    let path : Path = new Path();
+    path.name = name;
     //builds a path with outer coord stord in the rightside, and inner nodes stored in the left side.
     
     if (innerlat.length == innerlong.length){
         for (let i = 0; i < innerlat.length; i++){
             let vec3 : placeholderv3d;
             vec3 = get_cartesian_dd(innerlat[i], innerlong[i]);
-            let pathNode : PathNode;
+            let pathNode : PathNode = new PathNode();
             pathNode.coordinate.x = vec3.x;
             pathNode.coordinate.y = vec3.y;
             pathNode.errorMargin = errorMargin;
@@ -29,7 +30,7 @@ export function buildPath(name: string,
         for (let i = 0; i < outerlat.length; i++){
             let vec3 : placeholderv3d;
             vec3 = get_cartesian_dd(outerlat[i], outerlong[i]);
-            let pathNode : PathNode;
+            let pathNode : PathNode = new PathNode();
             pathNode.coordinate.x = vec3.x;
             pathNode.coordinate.y = vec3.y;
             pathNode.errorMargin = errorMargin;
