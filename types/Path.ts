@@ -6,7 +6,7 @@ export class Path implements IPath {
     rightSide : PathNode[];
 }
 
-class PathNode implements INode {
+export class PathNode implements INode {
     errorMargin : number;
     coordinate : Vec2d; 
 }

@@ -1,4 +1,4 @@
-interface Vector3 {
+export interface Vector3 {
     x: number;
     y: number;
     z: number;
@@ -12,7 +12,7 @@ interface DegreesMinutesSeconds {
     value: string
 }
 
-const get_cartesian_dd = (latitude, longitude) : Vector3 =>{
+export const get_cartesian_dd = (latitude, longitude) : Vector3 =>{
     ///radians = Angle in degrees x PI / 180.
     let lat : number = degreesToRadians(latitude);
     let long : number = degreesToRadians(longitude);
