@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, Text, TextInput, Button} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {StyleSheet, View, Text, TextInput, Button} from 'react-native';
 import {useDispatch} from "react-redux";
 import {updateConstant} from "../../store/actions/communicationActions";
+import {IAlgorithmUpdateData} from "../../interfaces/AlgorithmInterface"
 
 const Algorithm = () => {
 
@@ -9,6 +10,37 @@ const Algorithm = () => {
 
     const [test, setTest] = useState("0");
 
+    // Should get data from GPS
+    const gpsData: IAlgorithmUpdateData = {
+        path: null,
+        location: null,
+        time: null
+    };
+
+    const outOfPath = (path, location) => {
+        return false;
+    }
+
+    const stayTooLong = (location, time) => {
+        return false;
+    }
+
+    // 3 means high risk actions and should give warnings
+    // 2 means potential accidents and should provide asking
+    // 1 means all good and should keep providing navigation
+    const generateConstantValue = () => {
+        let p = gpsData.path;
+        let l = gpsData.location;
+        let t = gpsData.time;
+
+        if (outOfPath(p, l)){
+            return 3;
+        } else if (stayTooLong(l, t)){
+            return 2;
+        } else {
+            return 1;
+        }
+    }
 
     const sendMessage = () => {
         updateConstant(dispatch, test)
