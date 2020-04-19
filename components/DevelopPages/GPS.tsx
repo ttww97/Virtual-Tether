@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Alert, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { Badge } from 'react-native-elements';
 
 export default class GPS extends Component {
 	state = {
@@ -21,6 +22,10 @@ export default class GPS extends Component {
 	render() {
 		return (
 			<View style={styles.container}>
+				<Badge status='success' value="1" />
+   				<Badge status='error' value="2" />
+				<Badge status='primary' value="3" />
+				<Badge status='warning' value="4" />       
 				<TouchableOpacity onPress={this.findCoordinates}>
 					<Text style={styles.welcome}>Find My Coords?</Text>
 					<Text>Location: {this.state.location}</Text>
