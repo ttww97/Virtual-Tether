@@ -1,5 +1,12 @@
 import React from "react";
-import { StyleSheet, Text, View, Button, Alert } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Button,
+  Alert,
+  TouchableOpacity
+} from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 
 const Navigation = ({ navigation }) => {
@@ -54,6 +61,35 @@ const Navigation = ({ navigation }) => {
         <Text style={styles.smallText} accessibilityLabel="1/3 left">
           1/3
         </Text>
+      </View>
+      <View style={styles.cancel}>
+        <TouchableOpacity
+          accessibilityLabel="cancel the navigation"
+          onPress={() => {
+            Alert.alert("Simple Button pressed");
+          }}
+        >
+          <View
+            style={{
+              backgroundColor: "red",
+              alignItems: "center",
+              justifyContent: "center",
+              borderRadius: 15,
+              height: 100
+            }}
+          >
+            <Text
+              style={{
+                color: "white",
+                fontSize: 30,
+                height: 30,
+                fontWeight: "400"
+              }}
+            >
+              CANCEL
+            </Text>
+          </View>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -121,8 +157,15 @@ const styles = StyleSheet.create({
   laps: {
     flex: 0.2,
     justifyContent: "center",
-
     width: "100%",
+    paddingLeft: 15,
+    paddingRight: 15
+  },
+  cancel: {
+    flex: 0.3,
+    width: "100%",
+    justifyContent: "center",
+
     paddingLeft: 15,
     paddingRight: 15
   }
