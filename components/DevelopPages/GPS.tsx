@@ -3,7 +3,18 @@ import { Alert, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 
 export default class GPS extends Component {
 	state = {
-		location: null
+		location: null,
+		currentTime: null
+	};
+
+	// Add timestamp function
+	getCurrentTime = () => {
+		const date = new Date();
+		let month: String | Number = date.getMonth() + 1;
+		let timestamp: String = date.getFullYear() + "-" + month + "-" + date.getDate() + " "
+								 + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+
+		this.setState({currentTime: timestamp})
 	};
 
 	findCoordinates = () => {
@@ -18,12 +29,19 @@ export default class GPS extends Component {
 		);
 	};
 
+	// Add combined function that when cliking the button, it can call two functions
+	combineFunction = () => {
+		this.getCurrentTime();
+		this.findCoordinates();
+	}
+
 	render() {
 		return (
 			<View style={styles.container}>
-				<TouchableOpacity onPress={this.findCoordinates}>
+				<TouchableOpacity onPress={this.combineFunction}>
 					<Text style={styles.welcome}>Find My Coords?</Text>
-					<Text>Location: {this.state.location}</Text>
+					<Text>Location: </Text>
+					<Text>Timestamp: {this.state.currentTime}</Text>
 				</TouchableOpacity>
 			</View>
 		);
