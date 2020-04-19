@@ -73,7 +73,7 @@ const MainWelcome = ({ navigation }) => {
         >
           <View
             style={{
-              backgroundColor: "//#endregion6CB4EE",
+              backgroundColor: "#6CB4EE",
               alignItems: "center",
               justifyContent: "center",
               borderRadius: 15,
