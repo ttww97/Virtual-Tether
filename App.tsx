@@ -25,11 +25,7 @@ export default function App() {
             component={Menu}
             options={{ headerShown: false }}
           />
-          <Stack.Screen
-            name="Welcome - page"
-            component={MainWelcome}
-            options={{ headerShown: false }}
-          />
+          <Stack.Screen name="Welcome - page" component={MainWelcome} />
           <Stack.Screen name="Dev" component={Develop} />
           <Stack.Screen name="Dev - Algorithm" component={Algorithm} />
           <Stack.Screen name="Dev - GPS" component={GPS} />
