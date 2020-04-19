@@ -40,7 +40,7 @@ export default class GPS extends Component {
 			<View style={styles.container}>
 				<TouchableOpacity onPress={this.combineFunction}>
 					<Text style={styles.welcome}>Find My Coords?</Text>
-					<Text>Location: </Text>
+					<Text>Location: {this.state.location}</Text>
 					<Text>Timestamp: {this.state.currentTime}</Text>
 				</TouchableOpacity>
 			</View>
