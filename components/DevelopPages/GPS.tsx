@@ -4,17 +4,7 @@ import { Alert, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 export default class GPS extends Component {
 	state = {
 		location: null,
-		currentTime: null
-	};
-
-	// Add timestamp function
-	getCurrentTime = () => {
-		const date = new Date();
-		let month: String | Number = date.getMonth() + 1;
-		let timestamp: String = date.getFullYear() + "-" + month + "-" + date.getDate() + " "
-								 + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
-
-		this.setState({currentTime: timestamp})
+		timestamp: null
 	};
 
 	findCoordinates = () => {
@@ -22,26 +12,21 @@ export default class GPS extends Component {
 			position => {
 				const location = JSON.stringify(position);
 
-				this.setState({ location });
+				this.setState({ location: location });
+				this.setState({timestamp: position['timestamp']});
+				console.log(this.state);
 			},
 			error => Alert.alert(error.message),
 			{ enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
 		);
 	};
 
-	// Add combined function that when cliking the button, it can call two functions
-	combineFunction = () => {
-		this.getCurrentTime();
-		this.findCoordinates();
-	}
-
 	render() {
 		return (
 			<View style={styles.container}>
-				<TouchableOpacity onPress={this.combineFunction}>
+				<TouchableOpacity onPress={this.findCoordinates}>
 					<Text style={styles.welcome}>Find My Coords?</Text>
 					<Text>Location: {this.state.location}</Text>
-					<Text>Timestamp: {this.state.currentTime}</Text>
 				</TouchableOpacity>
 			</View>
 		);
