@@ -1,5 +1,6 @@
 import React from "react";
 import { StyleSheet, Text, View, Button, Alert } from "react-native";
+import Icon from "react-native-vector-icons/FontAwesome";
 
 const Navigation = ({ navigation }) => {
   const AlertTheUser = () => {
@@ -13,12 +14,18 @@ const Navigation = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Text
-        style={styles.titleText}
-        accessibilityLabel="Welcome to virtual tether"
-      >
-        Virtual Tether
-      </Text>
+      <View style={styles.header}>
+        <Text style={styles.headerText} accessibilityLabel="Virtual Tether">
+          Virtual Tether
+        </Text>
+
+        <Icon
+          name="bars"
+          size={30}
+          color="#fff"
+          accessibilityLabel="menu bar button"
+        />
+      </View>
     </View>
   );
 };
@@ -31,10 +38,21 @@ const styles = StyleSheet.create({
     justifyContent: "center"
   },
 
-  titleText: {
-    color: "black",
-    fontSize: 50,
-    textAlign: "left"
+  header: {
+    flex: 0.1,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    width: "100%",
+    backgroundColor: "#C0C0C0",
+    paddingLeft: 15,
+    paddingRight: 15
+  },
+
+  headerText: {
+    color: "#fff",
+    fontSize: 25,
+    fontWeight: "500"
   }
 });
 
