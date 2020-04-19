@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, Text, View, Button, Alert } from "react-native";
 
-const Menu = ({ navigation }) => {
+const Navigation = ({ navigation }) => {
   const AlertTheUser = () => {
     Alert.alert(
       "WIP",
@@ -19,22 +19,6 @@ const Menu = ({ navigation }) => {
       >
         Virtual Tether
       </Text>
-      <View>
-        <Button
-          accessibilityLabel="Enter the application"
-          title="Enter"
-          onPress={() => {
-            navigation.navigate("Nav - page");
-          }}
-        ></Button>
-        <Button
-          accessibilityLabel="Enter the developer page"
-          title="Developer"
-          onPress={() => {
-            navigation.navigate("Dev");
-          }}
-        ></Button>
-      </View>
     </View>
   );
 };
@@ -54,4 +38,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default Menu;
+export default Navigation;
