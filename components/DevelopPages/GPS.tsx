@@ -1,20 +1,21 @@
-import React, { Component } from 'react';
+import React, { Component, useState} from 'react';
 import { Alert, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 
 export default class GPS extends Component {
 	state = {
 		location: null,
-		timestamp: null
 	};
+
+	time = () => {
+		const [timestamp, setTimeStamp] = useState("0");
+
+	}
 
 	findCoordinates = () => {
 		navigator.geolocation.getCurrentPosition(
 			position => {
 				const location = JSON.stringify(position);
-
 				this.setState({ location: location });
-				this.setState({timestamp: position['timestamp']});
-				console.log(this.state);
 			},
 			error => Alert.alert(error.message),
 			{ enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
