@@ -1,3 +1,5 @@
+import { ICoordinate } from "../interfaces/ICoordinate";
+
 export interface Vector3 {
     x: number;
     y: number;
@@ -10,6 +12,11 @@ interface DecimalDegrees {
 
 interface DegreesMinutesSeconds {
     value: string
+}
+
+export const dropZ = (vec : Vector3) : ICoordinate  => {
+    const returnVector : ICoordinate = {x: vec.x, y :vec.y};
+    return returnVector;
 }
 
 export const get_cartesian_dd = (latitude, longitude) : Vector3 =>{

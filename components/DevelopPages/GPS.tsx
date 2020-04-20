@@ -1,38 +1,68 @@
-import React, { Component, useState} from 'react';
+import React, { useState, useEffect } from 'react';
 import { Alert, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import {updateLocation} from "../../store/actions/gpsActions";
+import {get_cartesian_dd, dropZ, Vector3} from "../../util/cartesian";
+import {useDispatch} from "react-redux";
 
-export default class GPS extends Component {
-	state = {
-		location: null,
-	};
+const GPS : React.FC = () =>{
 
-	time = () => {
-		const [timestamp, setTimeStamp] = useState("0");
+	const dispatch = useDispatch();
 
-	}
+	const [location, setLocation] = useState(null);
+	const [timestamp, setTimeStamp] = useState(null);
 
-	findCoordinates = () => {
+	const findCoordinates = () => {
 		navigator.geolocation.getCurrentPosition(
 			position => {
-				const location = JSON.stringify(position);
-				this.setState({ location: location });
+				//This is now in a json format
+				setLocation(position);
+
+				// Get timestamp and jsonify
+				let tempTime = {"timestamp": position['timestamp']};
+				let toJson = JSON.stringify(tempTime)
+				setTimeStamp(toJson);
 			},
 			error => Alert.alert(error.message),
 			{ enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
 		);
 	};
 
-	render() {
-		return (
-			<View style={styles.container}>
-				<TouchableOpacity onPress={this.findCoordinates}>
-					<Text style={styles.welcome}>Find My Coords?</Text>
-					<Text>Location: {this.state.location}</Text>
-				</TouchableOpacity>
-			</View>
-		);
+	const updateStoreLocation = () => {
+		//Convert from the returned type to cartesian vector 3
+		const vec3 : Vector3 = get_cartesian_dd(location.coords.latitude, location.coords.longitude);
+		//drop the z to make it an x,y coordinate
+		const cartesian_coordinates = dropZ(vec3);
+		//Dispatch an action to update the current location in the store.
+		updateLocation(dispatch, cartesian_coordinates);
 	}
+
+	//When the location value changes, update the store
+	useEffect(()=> {
+		if(location != null){
+			console.log("location object:",location);
+			updateStoreLocation();
+		}
+	}, [location])
+
+	// Show the timestamp
+	useEffect(() => {
+		if (timestamp != null){
+			console.log(timestamp);
+		}
+	}, [timestamp])
+
+	return (
+		<View style={styles.container}>
+			<TouchableOpacity onPress={findCoordinates}>
+				<Text style={styles.welcome}>Find My Coords?</Text>
+				<Text>Location: {JSON.stringify(location)}</Text>
+			</TouchableOpacity>
+		</View>
+	);
 }
+
+
+export default GPS;
 
 const styles = StyleSheet.create({
     container: {
@@ -47,6 +77,3 @@ const styles = StyleSheet.create({
 		margin: 10
 	}
   });
-  
-
-// export default GPS;
