@@ -9,22 +9,14 @@ import {
   TouchableOpacity
 } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp
+} from "react-native-responsive-screen";
 
 const MainWelcome = ({ navigation }) => {
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.headerText} accessibilityLabel="Virtual Tether">
-          Virtual Tether
-        </Text>
-        <Icon
-          name="bars"
-          size={30}
-          color="#fff"
-          accessibilityLabel="menu bar button"
-        />
-      </View>
-
       <View style={styles.banner}>
         <Icon
           name="edit"
@@ -77,10 +69,10 @@ const MainWelcome = ({ navigation }) => {
               alignItems: "center",
               justifyContent: "center",
               borderRadius: 15,
-              height: 100
+              height: hp("10%")
             }}
           >
-            <Text style={{ color: "white", fontSize: 30, height: 30 }}>
+            <Text style={{ color: "white", fontSize: hp("4%") }}>
               SELECT PATH
             </Text>
           </View>
@@ -120,29 +112,11 @@ const styles = StyleSheet.create({
     flexDirection: "column"
   },
 
-  header: {
-    flex: 0.1,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    width: "100%",
-    backgroundColor: "#C0C0C0",
-    paddingLeft: 15,
-    paddingRight: 15
-  },
-
-  headerText: {
-    color: "#fff",
-    fontSize: 25,
-    fontWeight: "500"
-  },
-
   banner: {
-    flex: 0.5,
+    height: hp("50%"),
     flexDirection: "column",
     justifyContent: "flex-start",
-
-    width: "100%",
+    width: wp("100%"),
     borderBottomWidth: 1,
     borderBottomColor: "#C0C0C0",
     borderBottomStartRadius: 50,
@@ -151,57 +125,57 @@ const styles = StyleSheet.create({
 
   bannerIcon: {
     textAlign: "right",
-    fontSize: 40,
-    marginRight: 15,
-    marginTop: 10
+    fontSize: wp("12%"),
+    marginRight: wp("5%"),
+    marginTop: hp("0.5%")
   },
 
   bannerImgContainer: {
-    flex: 0.8,
-    marginBottom: 20,
+    height: hp("13%"),
+    marginBottom: hp("1%"),
     justifyContent: "center",
     alignItems: "center"
   },
 
   selfie: {
-    width: 100,
-    height: 100,
+    width: wp("22%"),
+    height: wp("22%"),
     borderRadius: 50
   },
 
   name: {
     textAlign: "center",
-    fontSize: 30,
+    fontSize: wp("7%"),
     fontWeight: "500",
-    marginBottom: 20,
-    marginTop: 5
+    marginBottom: hp("1.5%"),
+    marginTop: hp("1%")
   },
 
   address: {
     textAlign: "center",
-    fontSize: 25,
+    fontSize: wp("6.5%"),
     fontWeight: "400",
-    marginBottom: 20
+    marginBottom: hp("1.5%")
   },
 
   emergency: {
     textAlign: "center",
-    fontSize: 22,
+    fontSize: wp("6%"),
     fontWeight: "400",
-    marginBottom: 20
+    marginBottom: hp("1.5%")
   },
 
   select: {
     width: "100%",
-    flex: 0.2,
+    height: hp("10%"),
+
     textAlign: "center",
     justifyContent: "center",
-    paddingHorizontal: 40,
-    paddingVertical: 10
+    paddingHorizontal: wp("5%")
   },
 
   startPath: {
-    flex: 0.3,
+    height: hp("30%"),
     width: "100%",
     textAlign: "center",
     justifyContent: "center"
@@ -209,13 +183,13 @@ const styles = StyleSheet.create({
 
   startPathText: {
     textAlign: "center",
-    fontSize: 30,
+    fontSize: hp("4%"),
     fontWeight: "400"
   },
 
   startPathButton: {
     textAlign: "center",
-    fontSize: 150,
+    fontSize: hp("15%"),
     color: "red"
   }
 });
