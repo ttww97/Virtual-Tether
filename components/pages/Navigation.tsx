@@ -8,23 +8,14 @@ import {
   TouchableOpacity
 } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp
+} from "react-native-responsive-screen";
 
 const Navigation = ({ navigation }) => {
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.headerText} accessibilityLabel="Navigation">
-          Navigation
-        </Text>
-
-        <Icon
-          name="bars"
-          size={30}
-          color="#fff"
-          accessibilityLabel="menu bar button"
-        />
-      </View>
-
       <View style={styles.time}>
         <View style={styles.timeText}>
           <Text style={styles.bigText} accessibilityLabel="Time">
@@ -40,7 +31,7 @@ const Navigation = ({ navigation }) => {
         <View style={styles.attentionIcon}>
           <Icon
             name="exclamation-triangle"
-            size={80}
+            size={wp("25%")}
             color="red"
             accessibilityLabel="attention icon"
           />
@@ -64,7 +55,7 @@ const Navigation = ({ navigation }) => {
       </View>
       <View style={styles.cancel}>
         <TouchableOpacity
-          accessibilityLabel="cancel the navigation"
+          accessibilityLabel="cancel the navigation button"
           onPress={() => {
             Alert.alert("Simple Button pressed");
           }}
@@ -75,14 +66,13 @@ const Navigation = ({ navigation }) => {
               alignItems: "center",
               justifyContent: "center",
               borderRadius: 15,
-              height: 100
+              height: hp("10%")
             }}
           >
             <Text
               style={{
                 color: "white",
-                fontSize: 30,
-                height: 30,
+                fontSize: wp("10%"),
                 fontWeight: "400"
               }}
             >
@@ -104,36 +94,19 @@ const styles = StyleSheet.create({
     flexDirection: "column"
   },
 
-  header: {
-    flex: 0.1,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    width: "100%",
-    backgroundColor: "#C0C0C0",
-    paddingLeft: 15,
-    paddingRight: 15
-  },
-
-  headerText: {
-    color: "#fff",
-    fontSize: 25,
-    fontWeight: "500"
-  },
   bigText: {
-    fontSize: 50
+    fontSize: wp("15%")
   },
   smallText: {
-    fontSize: 30
+    fontSize: wp("10%")
   },
   time: {
-    flex: 0.2,
+    height: hp("20%"),
     justifyContent: "space-between",
     flexDirection: "row",
-
     width: "100%",
-    paddingLeft: 15,
-    paddingRight: 15
+    paddingLeft: wp("5%"),
+    paddingRight: wp("5%")
   },
 
   timeText: {
@@ -147,27 +120,25 @@ const styles = StyleSheet.create({
   },
 
   distance: {
-    flex: 0.2,
+    height: hp("20%"),
     justifyContent: "center",
-
     width: "100%",
-    paddingLeft: 15,
-    paddingRight: 15
+    paddingLeft: wp("5%"),
+    paddingRight: wp("5%")
   },
   laps: {
-    flex: 0.2,
+    height: hp("20%"),
     justifyContent: "center",
     width: "100%",
-    paddingLeft: 15,
-    paddingRight: 15
+    paddingLeft: wp("5%"),
+    paddingRight: wp("5%")
   },
   cancel: {
-    flex: 0.3,
+    height: hp("20%"),
     width: "100%",
     justifyContent: "center",
-
-    paddingLeft: 15,
-    paddingRight: 15
+    paddingLeft: wp("5%"),
+    paddingRight: wp("5%")
   }
 });
 
