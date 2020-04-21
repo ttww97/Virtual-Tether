@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Text, TextInput, Button} from 'react-native';
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {updateConstant} from "../../store/actions/communicationActions";
 
 const Algorithm = () => {
 
     const dispatch = useDispatch();
 
+    const algorithmMessage = useSelector(state => state.gps.currentLocation);
     const [test, setTest] = useState("0");
 
 
@@ -18,6 +19,7 @@ const Algorithm = () => {
     return (
         <View style={styles.container}>
             <Text style={styles.text}>Algorithm</Text>
+            <Text>currentLocation: {JSON.stringify(algorithmMessage)}</Text>
             <View style={styles.inputBox} ><Text>Enter ConstantValue</Text><TextInput keyboardType={"numeric"} onChangeText={setTest} value={test}/></View>
             <Button title="Submit"  onPress={sendMessage}/>
         </View>
