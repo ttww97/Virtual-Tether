@@ -1,7 +1,22 @@
 import React from "react";
+<<<<<<< HEAD
 import { StyleSheet, Text, View, Button } from "react-native";
 
 const Menu = ({ navigation }) => {
+=======
+import { StyleSheet, Text, View, Button, Alert } from "react-native";
+
+const Menu = ({ navigation }) => {
+  const AlertTheUser = () => {
+    Alert.alert(
+      "WIP",
+      "function coming soon",
+      [{ text: "OK", onPress: () => console.log("OK Pressed") }],
+      { cancelable: false }
+    );
+  };
+
+>>>>>>> 29446a515946eaa5149358c510090fe3763e1b5b
   return (
     <View style={styles.container}>
       <Text
@@ -15,7 +30,11 @@ const Menu = ({ navigation }) => {
           accessibilityLabel="Enter the application"
           title="Enter"
           onPress={() => {
+<<<<<<< HEAD
             navigation.navigate("Welcome - page");
+=======
+            navigation.navigate("Nav - page");
+>>>>>>> 29446a515946eaa5149358c510090fe3763e1b5b
           }}
         ></Button>
         <Button
