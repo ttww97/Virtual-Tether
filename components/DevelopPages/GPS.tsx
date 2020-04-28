@@ -1,14 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { Alert, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
-import {updateLocation} from "../../store/actions/gpsActions";
+import {updateGpsData} from "../../store/actions/gpsActions";
 import {get_cartesian_dd, dropZ, Vector3} from "../../util/cartesian";
 import {useDispatch} from "react-redux";
+import { FellowsPath } from '../../paths/fellows/fellows';
+import {IAlgorithmUpdateData} from "../../interfaces/AlgorithmInterface"
+import { ICoordinate } from '../../interfaces/ICoordinate';
 
 const GPS : React.FC = () =>{
 
 	const dispatch = useDispatch();
 
 	const [location, setLocation] = useState(null);
+	const [path, setPath] = useState(FellowsPath);
 
 	const findCoordinates = () => {
 		navigator.geolocation.getCurrentPosition(
@@ -25,9 +29,15 @@ const GPS : React.FC = () =>{
 		//Convert from the returned type to cartesian vector 3
 		const vec3 : Vector3 = get_cartesian_dd(location.coords.latitude, location.coords.longitude);
 		//drop the z to make it an x,y coordinate
-		const cartesian_coordinates = dropZ(vec3);
+		const cartesian_coordinates : ICoordinate = dropZ(vec3);
 		//Dispatch an action to update the current location in the store.
-		updateLocation(dispatch, cartesian_coordinates);
+		const gps : IAlgorithmUpdateData = {
+			location: cartesian_coordinates,
+			time: {time : Date.now()},
+			path: path
+
+		}
+		updateGpsData(dispatch, gps);
 	}
 
 	//When the location value changes, update the store

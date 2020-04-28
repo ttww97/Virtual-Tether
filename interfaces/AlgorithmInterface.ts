@@ -7,4 +7,4 @@ export interface IAlgorithmUpdateData {
     path: IPath;
     location: ICoordinate;
     time: ITime;
-  }
+}

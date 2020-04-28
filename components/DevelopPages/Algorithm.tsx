@@ -10,13 +10,13 @@ const Algorithm = () => {
 
     const algorithmMessage = useSelector(state => state.gps.currentLocation);
     const [test, setTest] = useState("0");
+    const gpsData: IAlgorithmUpdateData = useSelector(state => state.gps.data);
 
-    // Should get data from GPS
-    const gpsData: IAlgorithmUpdateData = {
-        path: null,
-        location: null,
-        time: null
-    };
+    // On input update run the algorithm and dispatch result
+    useEffect(() => {
+        const result = generateConstantValue();
+        sendConstValue(result);
+    }, [gpsData])
 
     const outOfPath = (path, location) => {
         return false;
@@ -43,9 +43,8 @@ const Algorithm = () => {
         }
     }
 
-    const sendMessage = () => {
-        updateConstant(dispatch, test)
-        setTest("");
+    const sendConstValue = (value) => {
+        updateConstant(dispatch, value);
     }
 
     return (
@@ -53,7 +52,9 @@ const Algorithm = () => {
             <Text style={styles.text}>Algorithm</Text>
             <Text>currentLocation: {JSON.stringify(algorithmMessage)}</Text>
             <View style={styles.inputBox} ><Text>Enter ConstantValue</Text><TextInput keyboardType={"numeric"} onChangeText={setTest} value={test}/></View>
-            <Button title="Submit"  onPress={sendMessage}/>
+            <Button title="Submit"  onPress={()=>{
+                sendConstValue(test);
+            }}/>
         </View>
     );
 }
