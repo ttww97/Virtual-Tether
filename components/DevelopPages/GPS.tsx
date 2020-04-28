@@ -1,18 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { Alert, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
-import {updateGpsData} from "../../store/actions/gpsActions";
+import {updateGpsData, updatePath} from "../../store/actions/gpsActions";
 import {get_cartesian_dd, dropZ, Vector3} from "../../util/cartesian";
 import {useDispatch} from "react-redux";
-import { FellowsPath } from '../../paths/fellows/fellows';
+import { makeFellowsOval } from '../../test/pathtest';
 import {IAlgorithmUpdateData} from "../../interfaces/AlgorithmInterface"
 import { ICoordinate } from '../../interfaces/ICoordinate';
+import { Path } from '../../types/Path';
 
 const GPS : React.FC = () =>{
 
 	const dispatch = useDispatch();
 
 	const [location, setLocation] = useState(null);
-	const [path, setPath] = useState(FellowsPath);
+
+	//Use fellows oval by default, in future we should make this selectable
+	const [path, setPath] = useState(makeFellowsOval());
 
 	const findCoordinates = () => {
 		navigator.geolocation.getCurrentPosition(
@@ -34,8 +37,6 @@ const GPS : React.FC = () =>{
 		const gps : IAlgorithmUpdateData = {
 			location: cartesian_coordinates,
 			time: {time : Date.now()},
-			path: path
-
 		}
 		updateGpsData(dispatch, gps);
 	}
@@ -43,10 +44,16 @@ const GPS : React.FC = () =>{
 	//When the location value changes, update the store
 	useEffect(()=> {
 		if(location != null){
-			console.log("location object:",location)
 			updateStoreLocation();
 		}
 	}, [location])
+
+	//When the path value changes, update the store
+	useEffect(()=> {
+		if(path != null){
+			updatePath(dispatch, path);
+		}
+	}, [path])
 
 	return (
 		<View style={styles.container}>

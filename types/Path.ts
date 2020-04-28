@@ -1,4 +1,4 @@
-import {Vec2d} from "./Vec2D"
+import Vec2d from "./Vec2d"
 import {IPath, INode} from "../interfaces/Path"
 export class Path implements IPath {
     constructor(){
