@@ -12,7 +12,7 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
 } from "react-native-responsive-screen";
-import Swipe from "./Swipe";
+import Swiper from "react-native-swiper";
 
 const Selection = ({ navigation }) => {
   const AlertTheUser = () => {
@@ -39,7 +39,36 @@ const Selection = ({ navigation }) => {
           Current Path:
         </Text>
       </View>
-      <Swipe />
+      <Swiper
+        style={styles.wrapper}
+        showsButtons={true}
+        accessibilityTraits="allowsDirectInteraction"
+      >
+        <View style={styles.slide}>
+          <Text
+            style={styles.text}
+            accessibilityLabel="Fellow oval selected, swipe to select other paths"
+          >
+            Fellow Oval
+          </Text>
+        </View>
+        <View style={styles.slide}>
+          <Text
+            style={styles.text}
+            accessibilityLabel="Green oval selected, swipe to select other paths"
+          >
+            Green Oval
+          </Text>
+        </View>
+        <View style={styles.slide}>
+          <Text
+            style={styles.text}
+            accessibilityLabel="Pink oval selected, swipe to select other paths"
+          >
+            Pink Oval
+          </Text>
+        </View>
+      </Swiper>
       <View style={styles.buttonArea}>
         <TouchableOpacity
           onPress={() => {
@@ -110,6 +139,20 @@ const styles = StyleSheet.create({
   iconOk: {
     fontSize: wp("25%"),
     color: "red"
+  },
+  wrapper: {},
+
+  slide: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#97CAE5"
+  },
+
+  text: {
+    color: "#fff",
+    fontSize: wp("12%"),
+    fontWeight: "bold"
   }
 });
 
