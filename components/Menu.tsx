@@ -24,8 +24,7 @@ const Menu = ({ navigation }) => {
           accessibilityLabel="Enter the application"
           title="Enter"
           onPress={() => {
-            navigation.navigate("Welcome - page");
-            navigation.navigate("Nav - page");
+            navigation.navigate("Selection - page");
           }}
         ></Button>
         <Button
