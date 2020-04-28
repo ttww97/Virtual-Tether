@@ -9,12 +9,18 @@ const GPS : React.FC = () =>{
 	const dispatch = useDispatch();
 
 	const [location, setLocation] = useState(null);
+	const [timestamp, setTimeStamp] = useState(null);
 
 	const findCoordinates = () => {
 		navigator.geolocation.getCurrentPosition(
 			position => {
 				//This is now in a json format
 				setLocation(position);
+
+				// Get timestamp and jsonify
+				let tempTime = {"timestamp": position['timestamp']};
+				let toJson = JSON.stringify(tempTime)
+				setTimeStamp(toJson);
 			},
 			error => Alert.alert(error.message),
 			{ enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
@@ -33,10 +39,17 @@ const GPS : React.FC = () =>{
 	//When the location value changes, update the store
 	useEffect(()=> {
 		if(location != null){
-			console.log("location object:",location)
+			console.log("location object:",location);
 			updateStoreLocation();
 		}
 	}, [location])
+
+	// Show the timestamp
+	useEffect(() => {
+		if (timestamp != null){
+			console.log(timestamp);
+		}
+	}, [timestamp])
 
 	return (
 		<View style={styles.container}>
