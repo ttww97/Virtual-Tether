@@ -13,6 +13,7 @@ import Communication from "./components/DevelopPages/Communication";
 import GPS from "./components/DevelopPages/GPS";
 import MainWelcome from "./components/pages/MainWelcome";
 import Navigation from "./components/pages/Navigation";
+import Selection from "./components/pages/pathSelection";
 
 const Stack = createStackNavigator();
 
@@ -32,6 +33,7 @@ export default function App() {
           <Stack.Screen name="Dev - GPS" component={GPS} />
           <Stack.Screen name="Dev - Communication" component={Communication} />
           <Stack.Screen name="Nav - page" component={Navigation} />
+          <Stack.Screen name="Selection - page" component={Selection} />
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>

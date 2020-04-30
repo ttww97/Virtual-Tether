@@ -13,6 +13,7 @@ const GPS : React.FC = () =>{
 	const dispatch = useDispatch();
 
 	const [location, setLocation] = useState(null);
+	const [timestamp, setTimeStamp] = useState(null);
 
 	//Use fellows oval by default, in future we should make this selectable
 	const [path, setPath] = useState(makeFellowsOval());
@@ -22,6 +23,11 @@ const GPS : React.FC = () =>{
 			position => {
 				//This is now in a json format
 				setLocation(position);
+
+				// Get timestamp and jsonify
+				let tempTime = {"timestamp": position['timestamp']};
+				let toJson = JSON.stringify(tempTime)
+				setTimeStamp(toJson);
 			},
 			error => Alert.alert(error.message),
 			{ enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
@@ -54,6 +60,12 @@ const GPS : React.FC = () =>{
 			updatePath(dispatch, path);
 		}
 	}, [path])
+	// Show the timestamp
+	useEffect(() => {
+		if (timestamp != null){
+			console.log(timestamp);
+		}
+	}, [timestamp])
 
 	return (
 		<View style={styles.container}>
