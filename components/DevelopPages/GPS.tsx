@@ -51,6 +51,30 @@ const GPS : React.FC = () =>{
 		}
 	}, [timestamp])
 
+	const updateTest = () => {
+		useEffect(() => {
+			navigator.geolocation.getCurrentPosition(
+				position => {
+					if (location == null || location == undefined){
+						findCoordinates();
+					} else {
+						if (location['coords'] != position['coords']) {
+							setLocation(position);
+							updateStoreLocation();
+							console.log('update done')
+						}
+					}
+				},
+				error => Alert.alert(error.message),
+				{ enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
+			);
+		}, [location])
+	}
+
+	// Compared to latest location with previous one
+	// Run every 5 milliseconds
+	setInterval(updateTest(), 5)
+
 	return (
 		<View style={styles.container}>
 			<TouchableOpacity onPress={findCoordinates}>
