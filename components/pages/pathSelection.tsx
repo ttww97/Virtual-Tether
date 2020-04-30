@@ -4,7 +4,6 @@ import {
   Text,
   View,
   Button,
-  Alert,
   TouchableOpacity
 } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
@@ -70,7 +69,7 @@ const Selection = ({ navigation }) => {
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => {
-            navigation.navigate("Nav - page")
+            navigation.navigate("Welcome - page")
           }}
         >
           <View>
