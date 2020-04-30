@@ -2,15 +2,6 @@ import React from "react";
 import { StyleSheet, Text, View, Button, Alert } from "react-native";
 
 const Menu = ({ navigation }) => {
-  const AlertTheUser = () => {
-    Alert.alert(
-      "WIP",
-      "function coming soon",
-      [{ text: "OK", onPress: () => console.log("OK Pressed") }],
-      { cancelable: false }
-    );
-  };
-
   return (
     <View style={styles.container}>
       <Text
@@ -31,7 +22,7 @@ const Menu = ({ navigation }) => {
           accessibilityLabel="Enter the developer page"
           title="Developer"
           onPress={() => {
-            navigation.navigate("Dev");
+            navigation.navigate("Welcome - page");
           }}
         ></Button>
       </View>

@@ -15,23 +15,6 @@ import {
 import Swiper from "react-native-swiper";
 
 const Selection = ({ navigation }) => {
-  const AlertTheUser = () => {
-    Alert.alert(
-      "WIP",
-      "function coming soon",
-      [{ text: "OK", onPress: () => console.log("OK Pressed") }],
-      { cancelable: false }
-    );
-  };
-
-  const LeftActions = () => {
-    return (
-      <View>
-        <Text>Add to cart</Text>
-      </View>
-    );
-  };
-
   return (
     <View style={styles.container}>
       <View style={styles.textContainer}>
