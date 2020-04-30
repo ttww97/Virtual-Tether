@@ -72,7 +72,7 @@ const Selection = ({ navigation }) => {
       <View style={styles.buttonArea}>
         <TouchableOpacity
           onPress={() => {
-            Alert.alert("Simple Button pressed");
+            navigation.navigate("Welcome - page")
           }}
         >
           <View>
