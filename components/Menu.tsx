@@ -22,7 +22,7 @@ const Menu = ({ navigation }) => {
           accessibilityLabel="Enter the developer page"
           title="Developer"
           onPress={() => {
-            navigation.navigate("Welcome - page");
+            navigation.navigate("Dev");
           }}
         ></Button>
       </View>
