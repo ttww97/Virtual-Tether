@@ -13,9 +13,9 @@ export const output = () => {
   // if the algorithmMessage is in the range1, play the audio1
   for (let i = 0; i < audios.length; i++) {
     if (audios[i].range.isInRange(algorithmMessage)) {
-      const audioFile = require(`../assets/audios/${audios[i].output}.mp3`);
+      //const audioFile = require(`../assets/audios/${audios[i].output}.mp3`);
       const statusPalay = { shouldPlay: true };
-      playbackObject = Audio.Sound.createAsync(audioFile, statusPalay);
+      playbackObject = Audio.Sound.createAsync(audios[i].output, statusPalay);
     }
   }
 };

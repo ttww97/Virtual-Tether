@@ -16,7 +16,15 @@ class audioInstances implements IOutput {
 }
 
 // create an instance using range1 and export it
-const audio1 = new audioInstances(range1, 1, "camera");
-const audio2 = new audioInstances(range2, 1, "piano");
+const audio1 = new audioInstances(
+  range1,
+  1,
+  require("../assets/audios/camera.mp3")
+);
+const audio2 = new audioInstances(
+  range2,
+  1,
+  require("../assets/audios/piano.mp3")
+);
 
 export const audios = [audio1, audio2];
