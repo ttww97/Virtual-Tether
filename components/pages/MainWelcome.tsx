@@ -5,7 +5,6 @@ import {
   Text,
   Image,
   Button,
-  Alert,
   TouchableOpacity
 } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
@@ -60,7 +59,7 @@ const MainWelcome = ({ navigation }) => {
         <TouchableOpacity
           accessibilityLabel="select path button"
           onPress={() => {
-            Alert.alert("Simple Button pressed");
+            navigation.navigate("Selection - page");
           }}
         >
           <View
@@ -85,7 +84,7 @@ const MainWelcome = ({ navigation }) => {
         </Text>
         <TouchableOpacity
           onPress={() => {
-            Alert.alert("Simple Button pressed");
+            navigation.navigate("Nav - page");
           }}
         >
           <View>

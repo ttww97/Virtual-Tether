@@ -57,7 +57,7 @@ const Navigation = ({ navigation }) => {
         <TouchableOpacity
           accessibilityLabel="cancel the navigation button"
           onPress={() => {
-            Alert.alert("Simple Button pressed");
+              navigation.navigate("Welcome - page")
           }}
         >
           <View
