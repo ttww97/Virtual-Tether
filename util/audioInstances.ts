@@ -1,5 +1,5 @@
 import { IOutput } from "../interfaces/Communication";
-import { range1 } from "../util/rangeInstances";
+import { range1, range2 } from "../util/rangeInstances";
 import { IRange } from "../interfaces/Range";
 
 // implement the IOutput interface
@@ -14,7 +14,9 @@ class audioInstances implements IOutput {
     this.output = output;
   }
 }
-// output the name of the sound track
-const output1 = "camera";
+
 // create an instance using range1 and export it
-export const audio1 = new audioInstances(range1, 1, output1);
+const audio1 = new audioInstances(range1, 1, "camera");
+const audio2 = new audioInstances(range2, 1, "piano");
+
+export const audios = [audio1, audio2];
