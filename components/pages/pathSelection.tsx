@@ -4,7 +4,6 @@ import {
   Text,
   View,
   Button,
-  Alert,
   TouchableOpacity
 } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
@@ -15,23 +14,6 @@ import {
 import Swiper from "react-native-swiper";
 
 const Selection = ({ navigation }) => {
-  const AlertTheUser = () => {
-    Alert.alert(
-      "WIP",
-      "function coming soon",
-      [{ text: "OK", onPress: () => console.log("OK Pressed") }],
-      { cancelable: false }
-    );
-  };
-
-  const LeftActions = () => {
-    return (
-      <View>
-        <Text>Add to cart</Text>
-      </View>
-    );
-  };
-
   return (
     <View style={styles.container}>
       <View style={styles.textContainer}>
@@ -72,7 +54,7 @@ const Selection = ({ navigation }) => {
       <View style={styles.buttonArea}>
         <TouchableOpacity
           onPress={() => {
-            Alert.alert("Simple Button pressed");
+            navigation.navigate("Welcome - page")
           }}
         >
           <View>
@@ -87,7 +69,7 @@ const Selection = ({ navigation }) => {
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => {
-            Alert.alert("Simple Button pressed");
+            navigation.navigate("Welcome - page")
           }}
         >
           <View>
