@@ -36,20 +36,6 @@ const GPS : React.FC = () =>{
 		updateLocation(dispatch, cartesian_coordinates);
 	}
 
-	//When the location value changes, update the store
-	// useEffect(()=> {
-	// 	if(location != null){
-	// 		console.log("location object:",location);
-	// 		updateStoreLocation();
-	// 	}
-	// }, [location])
-
-	// Show the timestamp
-	// useEffect(() => {
-	// 	if (timestamp != null){
-	// 		console.log(timestamp);
-	// 	}
-	// }, [timestamp])
 
 	// This will continuously compare stored location and current location
 	// If they are different, update location
