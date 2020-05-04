@@ -37,19 +37,42 @@ const GPS : React.FC = () =>{
 	}
 
 	//When the location value changes, update the store
-	useEffect(()=> {
-		if(location != null){
-			console.log("location object:",location);
-			updateStoreLocation();
-		}
-	}, [location])
+	// useEffect(()=> {
+	// 	if(location != null){
+	// 		console.log("location object:",location);
+	// 		updateStoreLocation();
+	// 	}
+	// }, [location])
 
 	// Show the timestamp
+	// useEffect(() => {
+	// 	if (timestamp != null){
+	// 		console.log(timestamp);
+	// 	}
+	// }, [timestamp])
+
+	// This will continuously compare stored location and current location
+	// If they are different, update location
 	useEffect(() => {
-		if (timestamp != null){
-			console.log(timestamp);
-		}
-	}, [timestamp])
+		const interval = setInterval(() => {
+			navigator.geolocation.getCurrentPosition(
+				position => {
+					if (location == null){
+						findCoordinates();
+					} else {
+						if (location['coords'] != position['coords']) {
+							setLocation(position);
+							updateStoreLocation();
+							console.log('update done')
+						}
+					}
+				},
+				error => Alert.alert(error.message),
+				{ enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
+			);
+		}, 5);
+		return () => clearInterval(interval);
+	}, [location])
 
 	return (
 		<View style={styles.container}>
