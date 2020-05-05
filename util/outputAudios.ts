@@ -1,5 +1,6 @@
 import { shallowEqual, useSelector } from "react-redux";
-import { audio1 } from "./audioInstances";
+import React, { useEffect, useState } from "react";
+import { audios } from "./audioInstances";
 import { Audio } from "expo-av";
 
 export const output = () => {
@@ -10,13 +11,15 @@ export const output = () => {
     state => state.communication.constantValue,
     shallowEqual
   );
-  // if the algorithmMessage is in the range1, play the audio1
-  if (audio1.range.isInRange(algorithmMessage)) {
-    const audioFile = require(`../assets/audios/camera.mp3`);
-    const statusPalay = { shouldPlay: true };
-    playbackObject = Audio.Sound.createAsync(audioFile, statusPalay);
-    console.log("In range, can output a audio");
-  } else {
-    console.log("out of range, no correspondent audio ");
-  }
+
+  useEffect(() => {
+    console.log("Constant value changed to " + algorithmMessage);
+    for (let i = 0; i < audios.length; i++) {
+      if (audios[i].range.isInRange(algorithmMessage)) {
+        //const audioFile = require(`../assets/audios/${audios[i].output}.mp3`);
+        const statusPalay = { shouldPlay: true };
+        playbackObject = Audio.Sound.createAsync(audios[i].output, statusPalay);
+      }
+    }
+  }, [algorithmMessage]);
 };
