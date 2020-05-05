@@ -6,8 +6,8 @@ export interface IGPS {
   latitude : number;
   // The longitdue of the user's current location
   longitude: number; 
-  // The timestampe 
-  timestampe: number;
+  // The timestamp
+  timestamp: number;
 }
 
 export interface IGPSUpdate {
