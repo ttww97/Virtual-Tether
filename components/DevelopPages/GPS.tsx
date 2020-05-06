@@ -11,7 +11,7 @@ import { Path } from '../../types/Path';
 const GPS : React.FC = () =>{
 
 	const dispatch = useDispatch();
-
+	let gpsUpdateFrequency :number = 500;
 	const [location, setLocation] = useState(null);
 	const [timestamp, setTimeStamp] = useState(null);
 
@@ -78,7 +78,7 @@ const GPS : React.FC = () =>{
 				error => Alert.alert(error.message),
 				{ enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
 			);
-		}, 5);
+		}, gpsUpdateFrequency);
 		return () => clearInterval(interval);
 	}, [location])
 
