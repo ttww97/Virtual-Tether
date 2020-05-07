@@ -9,7 +9,7 @@ class range implements IRange {
     this.max = max;
   }
   isInRange(x: number): boolean {
-    if (x >= this.min && x <= this.max) {
+    if (x >= this.min && x < this.max) {
       return true;
     } else {
       return false;
@@ -18,3 +18,4 @@ class range implements IRange {
 }
 // create an instance and export it
 export const range1 = new range(1, 5);
+export const range2 = new range(5, 10);
