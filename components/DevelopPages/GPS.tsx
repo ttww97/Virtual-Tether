@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Alert, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { Badge } from 'react-native-elements';
 import {updateLocation} from "../../store/actions/gpsActions";
 import {get_cartesian_dd, dropZ, Vector3} from "../../util/cartesian";
 import {useDispatch} from "react-redux";
