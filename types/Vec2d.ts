@@ -41,11 +41,16 @@ export default class Vec2d implements ICoordinate{
     subtract(v : Vec2d) : Vec2d {        
         return new Vec2d(this.x - v.x, this.y - v.y);
     }
+
+    angel(v : Vec2d) : number {
+        let diff_x = v.x - this.x;
+        let diff_y = v.y - this.y;
+        return 360*Math.atan(diff_y/diff_x)/(2*Math.PI);
+    }
     
     scalarMult(a : number) : Vec2d {
         return new Vec2d(this.x * a, this.y * a);
     }
-
 
     toString() : string {
         return "(" + this.x + ", " + this.y + ")";
