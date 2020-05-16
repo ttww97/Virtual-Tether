@@ -1,19 +1,65 @@
-import React from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  Button,
-  Alert,
-  TouchableOpacity
-} from "react-native";
+import React, { useEffect, useState } from "react";
+import { Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { heightPercentageToDP as hp, widthPercentageToDP as wp } from "react-native-responsive-screen";
 import Icon from "react-native-vector-icons/FontAwesome";
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp
-} from "react-native-responsive-screen";
+import { updateLocation } from "../../store/actions/gpsActions";
+import { dropZ, get_cartesian_dd, Vector3 } from "../../util/cartesian";
+import {useDispatch} from "react-redux";
 
 const Navigation = ({ navigation }) => {
+
+  const dispatch = useDispatch();
+
+  const [location, setLocation] = useState(null);
+	const [timestamp, setTimeStamp] = useState(null);
+
+	const findCoordinates = () => {
+		navigator.geolocation.getCurrentPosition(
+			position => {
+				//This is now in a json format
+				setLocation(position);
+				// Get timestamp and jsonify
+				let tempTime = {"timestamp": position['timestamp']};
+				let toJson = JSON.stringify(tempTime)
+				setTimeStamp(toJson);
+			},
+			error => Alert.alert(error.message),
+			{ enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
+		);
+	};
+
+	const updateStoreLocation = () => {
+		//Convert from the returned type to cartesian vector 3
+		const vec3 : Vector3 = get_cartesian_dd(location.coords.latitude, location.coords.longitude);
+		//drop the z to make it an x,y coordinate
+		const cartesian_coordinates = dropZ(vec3);
+		//Dispatch an action to update the current location in the store.
+		updateLocation(dispatch, cartesian_coordinates);
+	}
+
+
+	// This will continuously compare stored location and current location
+	// If they are different, update location
+	useEffect(() => {
+			const watchId = navigator.geolocation.watchPosition(
+				position => {
+					if (location == null){
+						findCoordinates();
+					} else {
+						if (location['coords'] != position['coords']) {
+							setLocation(position);
+							updateStoreLocation();
+						}
+					}
+				},
+				error => Alert.alert(error.message),
+				{ enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
+			);
+    //I swapped this from polling which did work to a built in subscriber model
+    //This watchPosition only updates when the location moves and is more performant
+		return () => {navigator.geolocation.clearWatch(watchId)};
+	}, [location])
+
   return (
     <View style={styles.container}>
       <View style={styles.time}>
@@ -42,7 +88,7 @@ const Navigation = ({ navigation }) => {
           Distance
         </Text>
         <Text style={styles.smallText} accessibilityLabel="0.8 kilometers left">
-          0.8 km
+         0.8 km
         </Text>
       </View>
       <View style={styles.laps}>
