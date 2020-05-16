@@ -17,8 +17,10 @@ const GPS : React.FC = () =>{
 
 	//Use fellows oval by default, in future we should make this selectable
 	const [path, setPath] = useState(makeFellowsOval());
+	var firstLocation: Boolean = false;
 
 	const findCoordinates = () => {
+		firstLocation = true;
 		navigator.geolocation.getCurrentPosition(
 			position => {
 				//This is now in a json format
@@ -62,24 +64,26 @@ const GPS : React.FC = () =>{
 	// This will continuously compare stored location and current location
 	// If they are different, update location
 	useEffect(() => {
-		const interval = setInterval(() => {
-			navigator.geolocation.getCurrentPosition(
-				position => {
-					if (location == null){
-						findCoordinates();
-					} else {
-						if (location['coords'] != position['coords']) {
-							setLocation(position);
-							updateStoreLocation();
-							console.log('update done')
+		if (firstLocation) {
+			const interval = setInterval(() => {
+				navigator.geolocation.getCurrentPosition(
+					position => {
+						if (location == null){
+							findCoordinates();
+						} else {
+							if (location['coords'] != position['coords']) {
+								setLocation(position);
+								updateStoreLocation();
+								console.log('update done')
+							}
 						}
-					}
-				},
-				error => Alert.alert(error.message),
-				{ enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
-			);
-		}, gpsUpdateFrequency);
-		return () => clearInterval(interval);
+					},
+					error => Alert.alert(error.message),
+					{ enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
+				);
+			}, gpsUpdateFrequency);
+			return () => clearInterval(interval);
+		}
 	}, [location])
 
 	return (

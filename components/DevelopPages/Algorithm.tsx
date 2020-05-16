@@ -2,8 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Text, TextInput, Button} from 'react-native';
 import {useDispatch, useSelector} from "react-redux";
 import {updateConstant} from "../../store/actions/communicationActions";
-import {IAlgorithmUpdateData} from "../../interfaces/AlgorithmInterface"
+import {IAlgorithmUpdateData} from "../../interfaces/AlgorithmInterface";
 import { Path } from '../../types/Path';
+import Vec2d from '../../types/Vec2d';
 
 const Algorithm = () => {
 
@@ -13,6 +14,32 @@ const Algorithm = () => {
     const [test, setTest] = useState("0");
     const gpsData: IAlgorithmUpdateData = useSelector(state => state.gps.data);
     const path : Path = useSelector(state => state.gps.path);
+
+    // Target is the desired location, a instance of Vec2d
+    var target: Vec2d = new Vec2d(0, 0);
+    const [angel, setAngel] = useState(0);
+    useEffect(() => {
+        let previousLocation = algorithmMessage;
+        // Wait for a second
+        setTimeout(() => {console.log("Delay one second")}, 1000);
+        let currentLocation = algorithmMessage;
+        let oldx = previousLocation.x;
+        let oldy = previousLocation.y;
+        let currentx = currentLocation.x;
+        let currenty = currentLocation.y;
+        // Get current location
+        let currentDirection: Vec2d = new Vec2d(currentx - oldx, currenty - oldy);
+        let angel = currentDirection.angel(target);
+        setAngel(Math.abs(angel));
+    }, [algorithmMessage])
+
+    // Test angel
+    useEffect(() => {
+        let test1 = new Vec2d(1, 0);
+        let test2 = new Vec2d(0, 1);
+        setAngel(test1.angel(test2));
+        console.log(angel)
+    }, [angel])
 
     // On input update run the algorithm and dispatch result
     useEffect(() => {
