@@ -15,7 +15,7 @@ export class PathNode implements INode {
     constructor(){
         this.errorMargin= 0;
         this.coordinate = new Vec2d(0,0);
-        
+        // new stuff
         }
 
     
