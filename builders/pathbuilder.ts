@@ -1,7 +1,7 @@
 import { Path,PathNode } from "../types/Path";
 import { placeholderv3d } from "../types/placeholderv3d";
 import { get_cartesian_dd } from "../util/cartesian";
-import { Vec2d } from "../types/Vec2D";
+import  Vec2d  from "../types/Vec2D";
 
 
 export function buildPath(name: string,
