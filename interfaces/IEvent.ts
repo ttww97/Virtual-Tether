@@ -4,4 +4,6 @@ export interface IEvent {
     constantValue?: number;
 
     action: any;
+
+    generateJson();
 }

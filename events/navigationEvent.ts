@@ -11,4 +11,8 @@ export class NavigationEvent implements IEvent {
     constantValue: number = 0;
 
     action: string = "Navigation";
+
+    generateJson() {
+        return JSON.parse('{"type": ' + this.type + ', "constantValue": ' + this.constantValue + '}')
+    }
 }

@@ -11,4 +11,8 @@ export class EmergencyEvent implements IEvent {
     constantValue: number = 1;
 
     action: string = "Emergency";
+
+    generateJson() {
+        return JSON.parse('{"type": ' + this.type + ', "constantValue": ' + this.constantValue + '}')
+    }
 }
