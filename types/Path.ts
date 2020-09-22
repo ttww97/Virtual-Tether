@@ -8,16 +8,13 @@ export class Path implements IPath {
     name : string = "";
     leftSide: PathNode[] = [];
     rightSide : PathNode[] = [];
-    getCross(i: number) : Line{
-        if (this.leftSide.length < i -1) {
-            try {
-                throw new Error("out of bounds");
-                
-            } catch (error) {
-                console.log(error);
-            }          
-        } else {
-            return new Line(this.leftSide[i], this.rightSide[i]);
+    crossSections : Line[] = [];
+
+    updateCrossSectons(){
+        this.crossSections = [];
+        for (let i = 0; i < this.leftSide.length; i++){
+            this.crossSections.push({node1 : this.leftSide[i],
+                                     node2 : this.rightSide[i]})
         }
     }
 }
@@ -32,11 +29,13 @@ export class PathNode implements INode {
     errorMargin : number;
     coordinate : Vec2d; 
 }
+
 export class Line {
     constructor(n1: PathNode, n2: PathNode){
-        this.nodes[0] = n1;
-        this.nodes[1] = n2;
+        this.node1 = n1;
+        this.node2 = n2;
     }
-    nodes : PathNode[];
+    node1: PathNode;
+    node2: PathNode;
 }
 
