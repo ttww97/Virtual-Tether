@@ -57,15 +57,12 @@ export class Path implements IPath {
                 finerPathNodeSubList[0].push(this.sections[i].left2);
                 finerPathNodeSubList[1].push(this.sections[i].right2);
             }
-
             finerPathNodeList[0].concat(finerPathNodeSubList[0]);
             finerPathNodeList[1].concat(finerPathNodeSubList[1]);
         }
-        
         let FinerPath = new Path(finerPathNodeList[0], finerPathNodeList[1])
         FinerPath.createSections;
         this.finerSections = FinerPath.sections;
-
      }
 
      addNode(rightNode: PathNode, leftNode: PathNode){
@@ -82,7 +79,14 @@ export class Path implements IPath {
          }
      }
 
-     
+    getCurrentSection(currentLocation: Vec2d){
+        this.sections.forEach(section => {
+            if (section.isInside(currentLocation)){
+                return section;
+            }
+        });
+        return PathSection.invalidPath;
+    }
 }
 
 
@@ -93,8 +97,6 @@ export class PathNode implements INode {
         this.coordinate = coordinate || new Vec2d(0,0);
         // new stuff
     }
-
-    
     errorMargin : number;
     coordinate : Vec2d; 
 }
@@ -114,7 +116,9 @@ export class Line {
 
         return (crossProd_range - crossProd_vec1)> 0 && (crossProd_range - crossProd_vec2) > 0
     }
-
+    static vectorFromLine(line: Line) : Vec2d{
+        return (line.node2.coordinate.subtract(line.node1.coordinate));
+    }
 }
 
 // A section of the path is defined by the area contained by 4 nodes. 
@@ -131,7 +135,7 @@ export class PathSection {
     left2: PathNode;
     right1: PathNode;
     right2: PathNode;
-
+    static invalidPath : PathSection = null;
     isInside(coord: Vec2d) {
         //(this.left1.coordinate.x + this.left2.coordinate.x) / 2 + this.right1.coordinate.x + this.right2.coordinate.x);
         // x=[2,3,7]
@@ -225,5 +229,4 @@ export class PathSection {
         }
         return [finerPathNode_left,finerPathNode_right];
     }
-    
 }
