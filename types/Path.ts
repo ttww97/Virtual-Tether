@@ -1,11 +1,12 @@
 import Vec2d from "./Vec2d"
 import {IPath, INode} from "../interfaces/Path"
 export class Path implements IPath {
-    constructor(){
-        this.leftSide = [];
-        this.rightSide = [];
+    constructor(leftSide?: PathNode[], rightSide?: PathNode[]){
+        this.leftSide = leftSide || [];
+        this.rightSide = rightSide || [];
     }
     sections: PathSection[];
+    finerSections: PathSection[];
     name : string = "";
     leftSide: PathNode[] = [];
     rightSide : PathNode[] = [];
@@ -31,17 +32,69 @@ export class Path implements IPath {
             this.sections.push(tempsection)
         }
      }
- 
+
+     increaseGranularity(lengthOfSection: number){
+         // lengthOfSection denotes the desired spacing between path nodes
+         // this functions return a finer path data with fake evenly spaced 
+         // subnodes between original adjacent nodes satisfying the 
+         // lengthOfSection contraint
+        if (this.sections == null){
+            this.createSections;
+        }
+        this.finerSections = [];
+        let finerPathNodeList : PathNode[][] = [[],[]]; //to save all left nodes and right nodes
+
+        for (let i = 0; i < PathSection.length - 1; i ++){
+            let pathSect : PathSection = this.sections[i];
+            // here assuming the left vector is parallel to the right vector and has the same length
+            let leftSectVec : Vec2d = pathSect.left1.coordinate.subtract(pathSect.left2.coordinate);
+            let length : number = leftSectVec.norm();
+            let divisionFactor : number = Math.ceil(length / lengthOfSection);
+            let finerPathNodeSubList : PathNode[][] = pathSect.evenSpacing(divisionFactor);
+
+            if (i == PathSection.length - 2){
+                // add the last path node pair to finerPathNode as it's neglected by evenSpacing
+                finerPathNodeSubList[0].push(this.sections[i].left2);
+                finerPathNodeSubList[1].push(this.sections[i].right2);
+            }
+
+            finerPathNodeList[0].concat(finerPathNodeSubList[0]);
+            finerPathNodeList[1].concat(finerPathNodeSubList[1]);
+        }
+        
+        let FinerPath = new Path(finerPathNodeList[0], finerPathNodeList[1])
+        FinerPath.createSections;
+        this.finerSections = FinerPath.sections;
+
+     }
+
+     addNode(rightNode: PathNode, leftNode: PathNode){
+         // add new map data to the exisiting path
+         if (this.sections == null && this.rightSide == null && this.leftSide == null){
+             this.sections = [];
+             //TO DO when a new path needs to be created
+         }
+         else{
+            // To do when need to add new node pairs to existing path
+            // iterate all line segments formed by adjacent nodes as Vec2d
+            // use cross product of (b-a) and (c-a) equaling 0 to determine
+            // whether a point a is in the line segment bc 
+         }
+     }
+
+     
 }
 
 
 
 export class PathNode implements INode {
-    constructor(){
-        this.errorMargin= 0;
-        this.coordinate = new Vec2d(0,0);
+    constructor(errorMargin?: number, coordinate?: Vec2d){
+        this.errorMargin= errorMargin || 0;
+        this.coordinate = coordinate || new Vec2d(0,0);
+        // new stuff
+    }
 
-        }
+    
     errorMargin : number;
     coordinate : Vec2d; 
 }
@@ -58,13 +111,18 @@ export class Line {
 // A section of the path is defined by the area contained by 4 nodes. 
 // Left[n], left[n+1], right[n], right[n+1] 
 export class PathSection {
-    constructor() {
-
+    constructor(left1:PathNode, left2:PathNode, right1:PathNode, right2: PathNode) {
+        this.left1 = left1;
+        this.left2 = left2;
+        this.right1 = right1;
+        this.right2 = right2;
     }
+
     left1: PathNode;
     left2: PathNode;
     right1: PathNode;
     right2: PathNode;
+
     isInside(coord: Vec2d) {
         //(this.left1.coordinate.x + this.left2.coordinate.x) / 2 + this.right1.coordinate.x + this.right2.coordinate.x);
         // x=[2,3,7]
@@ -129,4 +187,34 @@ export class PathSection {
     getArea(x,y) { 
         return 0.5*( (x[0]*(y[1]-y[2])) + (x[1]*(y[2]-y[0])) + (x[2]*(y[0]-y[1])))
     }
+
+    evenSpacing(divisionFactor: number){
+        // evenly divide a path section to the divisionFactor amount and return a PathNode[] of 
+        // left nodes and right nodes containing the first node pair (right1 and left1) and all
+        // newly formed (faked) path nodes
+        // error margin inherited from the first PathNode
+        // noting here the left2 and right 2 are neglected to avoid duplication
+        if (divisionFactor == 1){
+            return [[this.left1,this.left2],[this.right1,this.right2]];
+        }
+        let finerPathNode_left : PathNode[] = [this.left1];
+        let finerPathNode_right = [this.right1]
+
+        let incrementalVec2D_left : Vec2d = this.left2.coordinate.subtract(this.left1.coordinate)
+            .scalarMult(1/divisionFactor)
+        let incrementalVec2D_right = this.right2.coordinate.subtract(this.right1.coordinate)
+            .scalarMult(1/divisionFactor)
+
+        for (let i = 1; i < divisionFactor; i ++){
+            let newLeft = new PathNode(this.left1.errorMargin, 
+                this.left1.coordinate.add(incrementalVec2D_left.scalarMult(i)));
+            finerPathNode_left.push(newLeft);
+
+            let newRight = new PathNode(this.right1.errorMargin, 
+                this.right1.coordinate.add(incrementalVec2D_right.scalarMult(i)));
+            finerPathNode_right.push(newRight)
+        }
+        return [finerPathNode_left,finerPathNode_right];
+    }
+    
 }
