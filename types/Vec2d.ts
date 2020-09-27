@@ -51,6 +51,13 @@ export default class Vec2d implements ICoordinate{
     scalarMult(a : number) : Vec2d {
         return new Vec2d(this.x * a, this.y * a);
     }
+    
+    static cross(a: Vec2d, b:Vec2d){
+        //normalized cross product  result (should be the sin(theta))
+        let a_normalized = a.normalize();
+        let b_normalized = b.normalize();
+        return (a_normalized.x * b_normalized.y + a_normalized.y * b_normalized.x)
+    }
 
     toString() : string {
         return "(" + this.x + ", " + this.y + ")";

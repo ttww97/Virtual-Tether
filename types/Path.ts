@@ -106,6 +106,15 @@ export class Line {
     }
     node1: PathNode;
     node2: PathNode;
+
+    static checkInRange(rangeVec1 : Vec2d, rangeVec2: Vec2d, checkedVec: Vec2d){
+        let crossProd_range = Vec2d.cross(rangeVec1,rangeVec2);
+        let crossProd_vec1 = Vec2d.cross(rangeVec1, checkedVec);
+        let crossProd_vec2 = Vec2d.cross(rangeVec2,checkedVec);
+
+        return (crossProd_range - crossProd_vec1)> 0 && (crossProd_range - crossProd_vec2) > 0
+    }
+
 }
 
 // A section of the path is defined by the area contained by 4 nodes. 
