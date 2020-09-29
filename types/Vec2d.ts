@@ -52,11 +52,11 @@ export default class Vec2d implements ICoordinate{
         return new Vec2d(this.x * a, this.y * a);
     }
     
-    static cross(a: Vec2d, b:Vec2d){
-        //normalized cross product  result (should be the sin(theta))
+    static innerNormalized(a: Vec2d, b:Vec2d){
+        //inner product of normalized a, b i.e. cos(theta)
         let a_normalized = a.normalize();
         let b_normalized = b.normalize();
-        return (a_normalized.x * b_normalized.y + a_normalized.y * b_normalized.x)
+        return (a_normalized.x * b_normalized.x + a_normalized.y * b_normalized.y)
     }
 
     toString() : string {

@@ -46,11 +46,16 @@ export class Path implements IPath {
 
         for (let i = 0; i < PathSection.length - 1; i ++){
             let pathSect : PathSection = this.sections[i];
-            // here assuming the left vector is parallel to the right vector and has the same length
+            
             let leftSectVec : Vec2d = pathSect.left1.coordinate.subtract(pathSect.left2.coordinate);
-            let length : number = leftSectVec.norm();
-            let divisionFactor : number = Math.ceil(length / lengthOfSection);
-            let finerPathNodeSubList : PathNode[][] = pathSect.evenSpacing(divisionFactor);
+            let length_left : number = leftSectVec.norm();
+            let divisionFactor_left : number = Math.ceil(length_left / lengthOfSection);
+
+            let rightSectVec = pathSect.right1.coordinate.subtract(pathSect.right2.coordinate);
+            let length_right = rightSectVec.norm();
+            let divisionFactor_right = Math.ceil(length_right / lengthOfSection);
+
+            let finerPathNodeSubList : PathNode[][] = pathSect.evenSpacing(divisionFactor_left, divisionFactor_right);
 
             if (i == PathSection.length - 2){
                 // add the last path node pair to finerPathNode as it's neglected by evenSpacing
@@ -108,11 +113,14 @@ export class Line {
     node2: PathNode;
 
     static checkInRange(rangeVec1 : Vec2d, rangeVec2: Vec2d, checkedVec: Vec2d){
-        let crossProd_range = Vec2d.cross(rangeVec1,rangeVec2);
-        let crossProd_vec1 = Vec2d.cross(rangeVec1, checkedVec);
-        let crossProd_vec2 = Vec2d.cross(rangeVec2,checkedVec);
+        //check whether checkedVec is in the range defined by rangeVec1 and rangeVec2
+        let innerProd_range = Vec2d.innerNormalized(rangeVec1, rangeVec2);
+        let innerProd_vec1 = Vec2d.innerNormalized(rangeVec1, checkedVec);
+        let innerProd_vec2 = Vec2d.innerNormalized(rangeVec2, checkedVec);
 
-        return (crossProd_range - crossProd_vec1)> 0 && (crossProd_range - crossProd_vec2) > 0
+        //meaning the checkedVec is closer to rangeVec1 than rangeVec2 and closer to 
+        //rangeVec2 than rangeVec1 thus inbetween them.
+        return (innerProd_range - innerProd_vec1)> 0 && (innerProd_range - innerProd_vec2) > 0
     }
 
 }
@@ -197,28 +205,30 @@ export class PathSection {
         return 0.5*( (x[0]*(y[1]-y[2])) + (x[1]*(y[2]-y[0])) + (x[2]*(y[0]-y[1])))
     }
 
-    evenSpacing(divisionFactor: number){
+    evenSpacing(divisionFactor_left: number, divisionFactor_right : number){
         // evenly divide a path section to the divisionFactor amount and return a PathNode[] of 
         // left nodes and right nodes containing the first node pair (right1 and left1) and all
         // newly formed (faked) path nodes
         // error margin inherited from the first PathNode
         // noting here the left2 and right 2 are neglected to avoid duplication
-        if (divisionFactor == 1){
+        if (divisionFactor_left == 1 && divisionFactor_right == 1){
             return [[this.left1,this.left2],[this.right1,this.right2]];
         }
         let finerPathNode_left : PathNode[] = [this.left1];
         let finerPathNode_right = [this.right1]
 
         let incrementalVec2D_left : Vec2d = this.left2.coordinate.subtract(this.left1.coordinate)
-            .scalarMult(1/divisionFactor)
+            .scalarMult(1/divisionFactor_left)
         let incrementalVec2D_right = this.right2.coordinate.subtract(this.right1.coordinate)
-            .scalarMult(1/divisionFactor)
+            .scalarMult(1/divisionFactor_right)
 
-        for (let i = 1; i < divisionFactor; i ++){
+        for (let i = 1; i < divisionFactor_left; i ++){
             let newLeft = new PathNode(this.left1.errorMargin, 
                 this.left1.coordinate.add(incrementalVec2D_left.scalarMult(i)));
             finerPathNode_left.push(newLeft);
+        }
 
+        for (let i = 1; i < divisionFactor_right; i ++){
             let newRight = new PathNode(this.right1.errorMargin, 
                 this.right1.coordinate.add(incrementalVec2D_right.scalarMult(i)));
             finerPathNode_right.push(newRight)
