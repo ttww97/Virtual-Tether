@@ -1,9 +1,9 @@
 import React from "react";
-import { StyleSheet, View, Text } from "react-native";
+import { StyleSheet, View, Text, Button } from "react-native";
 import { shallowEqual, useSelector } from "react-redux";
 import { output } from "../../util/outputAudios";
-import { Audio } from "expo";
-import * as Expo from "expo";
+import { Audio } from "expo-av";
+
 
 const Communication = () => {
   output();
@@ -12,11 +12,21 @@ const Communication = () => {
     shallowEqual
   );
 
+  function playSound() {
+    Audio.requestPermissionsAsync();
+    Audio.getPermissionsAsync();
+    Audio.setIsEnabledAsync(true);
+
+    const statusPlay = {shouldPlay: true};
+    Audio.Sound.createAsync(require('../../assets/audios/KeepMoving.mp3'), statusPlay);
+  }
+
   return (
     <View style={styles.container}>
       <Text style={styles.text}>Communication</Text>
       <Text>ConstantValue is: {algorithmMessage}</Text>
       <Text>value from audioOutputs is: {algorithmMessage}</Text>
+      <Button title="Play sound" onPress = {() => {playSound()}}/>
     </View>
   );
 };

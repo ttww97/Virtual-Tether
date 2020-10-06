@@ -19,7 +19,7 @@ class audioInstances implements IOutput {
 const audio1 = new audioInstances(
   range1,
   1,
-  require("../assets/audios/camera.mp3")
+  require("../assets/audios/KeepMoving.mp3")
 );
 const audio2 = new audioInstances(
   range2,
