@@ -139,7 +139,7 @@ export class PathSection {
     left2: PathNode;
     right1: PathNode;
     right2: PathNode;
-
+    static invalidPath : PathSection = null;
     isInside(coord: Vec2d) {
         //(this.left1.coordinate.x + this.left2.coordinate.x) / 2 + this.right1.coordinate.x + this.right2.coordinate.x);
         // x=[2,3,7]
@@ -197,12 +197,29 @@ export class PathSection {
         area_tran4 = this.getArea(x, y);
         
         area_tran = area_tran1 + area_tran2 + area_tran3 + area_tran4;
+        if ((coord.x == this.left1.coordinate.x && coord.y == this.left1.coordinate.y) ||
+        (coord.x == this.left2.coordinate.x && coord.y == this.left2.coordinate.y)||
+        (coord.x == this.right1.coordinate.x && coord.y == this.right1.coordinate.y)||
+            (coord.x == this.right2.coordinate.x && coord.y == this.right2.coordinate.y)) { 
+            return true;
+
+        }
+        // console.log(area_rec1)
+        // console.log(area_rec2)
+        
+        // console.log(area_rec)
+        // console.log(area_tran1)
+        // console.log(area_tran2)
+        // console.log(area_tran3)
+        // console.log(area_tran4)
+
+        // console.log(area_tran)
 
         return area_rec == area_tran;
     }
 
     getArea(x,y) { 
-        return 0.5*( (x[0]*(y[1]-y[2])) + (x[1]*(y[2]-y[0])) + (x[2]*(y[0]-y[1])))
+        return Math.abs(0.5*( (x[0]*(y[1]-y[2])) + (x[1]*(y[2]-y[0])) + (x[2]*(y[0]-y[1]))))
     }
 
     evenSpacing(divisionFactor_left: number, divisionFactor_right : number){
