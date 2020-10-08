@@ -17,8 +17,14 @@ const Communication = () => {
     Audio.getPermissionsAsync();
     Audio.setIsEnabledAsync(true);
 
-    const statusPlay = {shouldPlay: true};
-    Audio.Sound.createAsync(require('../../assets/audios/KeepMoving.mp3'), statusPlay);
+    if (algorithmMessage == 0) {
+      const statusPlay = {shouldPlay: true};
+      Audio.Sound.createAsync(require('../../assets/audios/KeepMoving.mp3'), statusPlay);
+    }else if (algorithmMessage == 1){
+      const statusPlay = {shouldPlay: true};
+      Audio.Sound.createAsync(require('../../assets/audios/Emergent.mp3'), statusPlay);
+    }
+
   }
 
   return (
