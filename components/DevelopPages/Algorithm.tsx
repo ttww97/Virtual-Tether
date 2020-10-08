@@ -3,8 +3,12 @@ import { StyleSheet, View, Text, TextInput, Button} from 'react-native';
 import {useDispatch, useSelector} from "react-redux";
 import {updateConstant} from "../../store/actions/communicationActions";
 import {IAlgorithmUpdateData} from "../../interfaces/AlgorithmInterface";
-import { Path } from '../../types/Path';
+import { Path, PathSection } from '../../types/Path';
 import Vec2d from '../../types/Vec2d';
+import { buildPath, buildPathCart } from '../../builders/pathbuilder';
+import { innerLat, innerLong, outerLat, outerLong } from '../../paths/dirrawan/dirrawan'
+import { innerLat as fellowsILat, innerLong as fellowsILong, outerLat as fellowsOLat, outerLong as fellowsOLong } from '../../paths/fellows/fellows'
+import { getBestDirection } from '../../util/navigationfunctions';
 
 const Algorithm = () => {
 
@@ -12,6 +16,10 @@ const Algorithm = () => {
 
     const algorithmMessage = useSelector(state => state.gps.currentLocation);
     const [test, setTest] = useState("0");
+    const [teststate, setTestState] = useState("defulttext")
+    const [headingState, setHeadingState] = useState("defulttext")
+    var p : Path;
+    var p2 : Path;
     const gpsData: IAlgorithmUpdateData = useSelector(state => state.gps.data);
     const path : Path = useSelector(state => state.gps.path);
 
@@ -76,7 +84,20 @@ const Algorithm = () => {
     const sendConstValue = (value) => {
         updateConstant(dispatch, value);
     }
-
+    const buildTestPath = () => {
+        p2  = buildPath("testpath", fellowsILat,fellowsILong,fellowsOLat,fellowsOLong,0)
+        p  = buildPath("dirrawan", innerLat,innerLong,outerLat,outerLong,0);
+        console.log(p)
+        
+    }
+    const speedTest = () => {
+        let loc : Vec2d = new Vec2d(4.6103,5.83651)
+        let t1 = performance.now()
+        setHeadingState("best heading" + getBestDirection(p,loc));
+        let t2 =performance.now()
+        
+    }
+    
     return (
         <View style={styles.container}>
             <Text style={styles.text}>Algorithm</Text>
@@ -85,6 +106,15 @@ const Algorithm = () => {
             <Button title="Submit"  onPress={()=>{
                 sendConstValue(test);
             }}/>
+
+            <Button title="BuildPath"  onPress={()=>{
+                buildTestPath();
+            }}/>
+            <Button title="speedtest"  onPress={()=>{
+                speedTest();
+            }}/>
+            <Text>currentLocation: {teststate}</Text>
+            <Text>calculated heading: {headingState}</Text>
         </View>
     );
 }

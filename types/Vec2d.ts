@@ -56,7 +56,8 @@ export default class Vec2d implements ICoordinate{
         //inner product of normalized a, b i.e. cos(theta)
         let a_normalized = a.normalize();
         let b_normalized = b.normalize();
-        return (a_normalized.x * b_normalized.x + a_normalized.y * b_normalized.y)
+        console.log(a_normalized + ","+ b_normalized)
+        return (a_normalized.x * b_normalized.y - a_normalized.y * b_normalized.x)
     }
 
     toString() : string {

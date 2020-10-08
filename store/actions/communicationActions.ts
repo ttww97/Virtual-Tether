@@ -6,7 +6,7 @@ export interface ConstantValueAction {
 }
 
 export interface AddAlert {
-  alert: string;
+  alert: object;
 }
 
 export const updateConstant = (dispatch, constantValue) => {

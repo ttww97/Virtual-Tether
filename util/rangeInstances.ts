@@ -17,5 +17,5 @@ class range implements IRange {
   }
 }
 // create an instance and export it
-export const range1 = new range(1, 5);
-export const range2 = new range(5, 10);
+export const range1 = new range(0, 180);
+export const range2 = new range(180, 360);

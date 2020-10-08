@@ -24,13 +24,9 @@ export class Path implements IPath {
     createSections() {
         this.sections = [];
         for (let i = 0; i < this.leftSide.length-1; i++){
-            let tempsection: PathSection;
-            tempsection.left1= this.leftSide[i]
-            tempsection.left2= this.leftSide[i+1]
-            tempsection.right1= this.rightSide[i]
-            tempsection.right2 = this.rightSide[i + 1]   
+            let tempsection: PathSection = new PathSection(this.leftSide[i],this.leftSide[i+1],this.rightSide[i], this.rightSide[i + 1]);
             this.sections.push(tempsection)
-        }
+        } 
      }
 
      increaseGranularity(lengthOfSection: number){
@@ -86,6 +82,16 @@ export class Path implements IPath {
             // whether a point a is in the line segment bc 
          }
      }
+     getCurrentSection(currentLocation: Vec2d){
+        for (let i = this.sections.length -1; i > -1; i--) {
+            if (this.sections[i].isInside(currentLocation)){
+                return this.sections[i];
+            }
+        }
+        
+      
+        return PathSection.invalidSection;
+    }
 
      
 }
@@ -114,13 +120,17 @@ export class Line {
 
     static checkInRange(rangeVec1 : Vec2d, rangeVec2: Vec2d, checkedVec: Vec2d){
         //check whether checkedVec is in the range defined by rangeVec1 and rangeVec2
-        let innerProd_range = Vec2d.innerNormalized(rangeVec1, rangeVec2);
-        let innerProd_vec1 = Vec2d.innerNormalized(rangeVec1, checkedVec);
+        let innerProd_range = Vec2d.innerNormalized(rangeVec2, rangeVec1);
+        let innerProd_vec1 = Vec2d.innerNormalized(checkedVec, rangeVec1);
         let innerProd_vec2 = Vec2d.innerNormalized(rangeVec2, checkedVec);
+
+
 
         //meaning the checkedVec is closer to rangeVec1 than rangeVec2 and closer to 
         //rangeVec2 than rangeVec1 thus inbetween them.
-        return (innerProd_range - innerProd_vec1)> 0 && (innerProd_range - innerProd_vec2) > 0
+       
+
+        return (innerProd_vec1) * (innerProd_vec2) >= 0
     }
 
 }
@@ -139,7 +149,7 @@ export class PathSection {
     left2: PathNode;
     right1: PathNode;
     right2: PathNode;
-    static invalidPath : PathSection = null;
+    static invalidSection : PathSection = null;
     isInside(coord: Vec2d) {
         //(this.left1.coordinate.x + this.left2.coordinate.x) / 2 + this.right1.coordinate.x + this.right2.coordinate.x);
         // x=[2,3,7]
@@ -197,25 +207,18 @@ export class PathSection {
         area_tran4 = this.getArea(x, y);
         
         area_tran = area_tran1 + area_tran2 + area_tran3 + area_tran4;
+
         if ((coord.x == this.left1.coordinate.x && coord.y == this.left1.coordinate.y) ||
         (coord.x == this.left2.coordinate.x && coord.y == this.left2.coordinate.y)||
         (coord.x == this.right1.coordinate.x && coord.y == this.right1.coordinate.y)||
             (coord.x == this.right2.coordinate.x && coord.y == this.right2.coordinate.y)) { 
             return true;
-
         }
-        // console.log(area_rec1)
-        // console.log(area_rec2)
+
         
-        // console.log(area_rec)
-        // console.log(area_tran1)
-        // console.log(area_tran2)
-        // console.log(area_tran3)
-        // console.log(area_tran4)
-
-        // console.log(area_tran)
-
-        return area_rec == area_tran;
+        
+        //convert to 9 sig digets
+        return area_rec.toFixed(9) == area_tran.toFixed(9);
     }
 
     getArea(x,y) { 

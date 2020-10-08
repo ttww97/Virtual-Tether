@@ -4,14 +4,99 @@ import { heightPercentageToDP as hp, widthPercentageToDP as wp } from "react-nat
 import Icon from "react-native-vector-icons/FontAwesome";
 import { updateLocation } from "../../store/actions/gpsActions";
 import { dropZ, get_cartesian_dd, Vector3 } from "../../util/cartesian";
-import {useDispatch} from "react-redux";
+import {useDispatch, shallowEqual, useSelector} from "react-redux";
+import { Path } from "../../types/Path";
+import { testpath, innerLat, innerLong, outerLat, outerLong } from "../../paths/testpath/testpath";
+import { buildPathCart } from "../../builders/pathbuilder";
+import { updateConstant } from "../../store/actions/communicationActions";
+import Vec2d from "../../types/Vec2d";
+import { getBestDirection } from "../../util/navigationfunctions";
+import { output } from "../../util/outputAudios";
+
+import { Audio } from "expo-av";
+import { audios } from "../../util/audioInstances";
+
 
 const Navigation = ({ navigation }) => {
+  let path  = buildPathCart("testpath", innerLat,innerLong,outerLat,outerLong,0);
+  const [currentDirection , setcurrentDirection] = useState(new Vec2d(0,1));
 
+  const [previousLocation , setPreviouseLocation] = useState(new Vec2d(0,0));
+
+  const algorithmMessage = useSelector(
+    state => state.communication.constantValue,
+    shallowEqual
+  );
+  const currentLocation : Vec2d = useSelector(
+    state => state.gps.currentLocation
+  );
   const dispatch = useDispatch();
-
   const [location, setLocation] = useState(null);
-	const [timestamp, setTimeStamp] = useState(null);
+  const [timestamp, setTimeStamp] = useState(null);
+  const [angel, setAngel] = useState(0);
+
+
+  // play a sound based on the constant value
+/*   useEffect(() => {
+
+    // initialise and update the audio
+
+    console.log("Constant value changed to " + algorithmMessage);
+
+    let playbackObject = new Audio.Sound();
+    async function outputAudio() {
+      for (let i = 0; i < audios.length; i++) {
+        if (audios[i].range.isInRange(algorithmMessage)) {
+          try {
+            console.log("the sound is playing");
+            await playbackObject.loadAsync({uri:audios[i].output});
+            await playbackObject.setIsLoopingAsync(true);
+            await playbackObject.playAsync();
+          } catch (error) {
+            console.log("ERROR:" + error);
+          }
+        }
+      }
+    }
+    outputAudio();
+    // pause the audio here, run this function when the component is deleted
+    return () => {
+      try {
+        console.log("the sound should stop");
+        playbackObject.stopAsync();
+      } catch (error) {
+        console.log("ERROR:" + error);
+      }
+    };
+  }, [algorithmMessage]); */
+
+  // on location change detect best heading
+  useEffect(() => {
+
+    
+    let loc : Vec2d = currentLocation;
+    let target = getBestDirection(path,loc)
+    let angel = currentDirection.angel(target);
+    setAngel(Math.abs(angel));
+    sendConstValue(angel);
+  }, [currentLocation]);
+
+  //on location change, calculate current heading
+   useEffect(() => {
+    
+    let nextLocation : Vec2d = currentLocation;
+    let oldx = previousLocation.x;
+    let oldy = previousLocation.y;
+    let currentx = nextLocation.x;
+    let currenty = nextLocation.y;
+    
+    if (oldx != currentx && oldy != currenty){
+    // Get current location
+    setcurrentDirection(new Vec2d(currentx - oldx, currenty - oldy));
+    setPreviouseLocation(currentLocation)
+    }
+  }, [currentLocation]) 
+  
 
 	const findCoordinates = () => {
 		navigator.geolocation.getCurrentPosition(
@@ -35,12 +120,17 @@ const Navigation = ({ navigation }) => {
 		const cartesian_coordinates = dropZ(vec3);
 		//Dispatch an action to update the current location in the store.
 		updateLocation(dispatch, cartesian_coordinates);
-	}
+  }
+  
+  const sendConstValue = (value) => {
+    updateConstant(dispatch, value);
+  }
 
 
 	// This will continuously compare stored location and current location
 	// If they are different, update location
 	useEffect(() => {
+      
 			const watchId = navigator.geolocation.watchPosition(
 				position => {
 					if (location == null){
@@ -48,7 +138,7 @@ const Navigation = ({ navigation }) => {
 					} else {
 						if (location['coords'] != position['coords']) {
 							setLocation(position);
-							updateStoreLocation();
+              updateStoreLocation();
 						}
 					}
 				},
@@ -98,6 +188,13 @@ const Navigation = ({ navigation }) => {
         <Text style={styles.smallText} accessibilityLabel="1/3 left">
           1/3
         </Text>
+        <Text style={styles.text} accessibilityLabel="currentlocation">
+          {JSON.stringify(currentLocation)}
+        </Text>
+        <Text style={styles.text} accessibilityLabel="currentlocation">
+          {JSON.stringify(currentDirection)}
+        </Text>
+
       </View>
       <View style={styles.cancel}>
         <TouchableOpacity
@@ -185,6 +282,9 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     paddingLeft: wp("5%"),
     paddingRight: wp("5%")
+  },
+  text:{
+    fontSize: 20
   }
 });
 
